@@ -23,14 +23,9 @@ public class DeviceDescriptor {
     private String address;
     private int port;
 
-<<<<<<< HEAD:hub/src/main/java/it/unimore/iot/project/hub/coap/model/DeviceDescriptor.java
 
     public DeviceDescriptor(String name, String address, int port) {
         this.resources = new HashSet<>();
-=======
-    public CoapDeviceDescriptor(String name, String address, int port) {
-        this.resources = new ArrayList<CoapDeviceResourceDescriptor>();
->>>>>>> parent of feec322 (Started adding manual POST && PUT support setting to avoid resource code testing):Hub/src/main/java/it/unimore/iot/project/hub/http/models/coap/CoapDeviceDescriptor.java
 
         this.name = name;
         this.address = address;

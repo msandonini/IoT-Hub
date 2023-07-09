@@ -1,13 +1,8 @@
 package it.unimore.iot.project.hub.http.resources;
 
 import io.dropwizard.jersey.errors.ErrorMessage;
-<<<<<<< HEAD
 import it.unimore.iot.project.hub.coap.model.DeviceDescriptor;
 import it.unimore.iot.project.hub.http.model.DeviceAdditionRequest;
-=======
-import it.unimore.iot.project.hub.http.models.coap.CoapDeviceDescriptor;
-import it.unimore.iot.project.hub.http.models.IncomingDeviceDescriptor;
->>>>>>> parent of feec322 (Started adding manual POST && PUT support setting to avoid resource code testing)
 import it.unimore.iot.project.hub.http.services.AppConfig;
 
 import javax.ws.rs.*;
@@ -57,13 +52,8 @@ public class DeviceListResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public synchronized Response addDevice(@Context ContainerRequestContext req,
-<<<<<<< HEAD
                                            @Context UriInfo uriInfo,
                                            DeviceAdditionRequest deviceRequest) {
-=======
-                              @Context UriInfo uriInfo,
-                              IncomingDeviceDescriptor incomingDeviceDescriptor) {
->>>>>>> parent of feec322 (Started adding manual POST && PUT support setting to avoid resource code testing)
         try {
             if (deviceRequest.getName() == null || deviceRequest.getName().isBlank() ||
                     deviceRequest.getAddress() == null || deviceRequest.getAddress().isBlank() ||
