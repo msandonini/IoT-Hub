@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>it.unimore.iot.project</groupId>
+    <artifactId>hub</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <dropwizard.version>2.1.6</dropwizard.version>
+        <californium.version>3.8.0</californium.version>
+        <jackson.version>2.15.2</jackson.version>
+    </properties>
+    
+    <dependencies>
+        <!-- Dropwizard Core - HTTP Server -->
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-core</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+
+        <!-- Californium Core - CoAP Server -->
+        <dependency>
+            <groupId>org.eclipse.californium</groupId>
+            <artifactId>californium-core</artifactId>
+            <version>${californium.version}</version>
+        </dependency>
+
+        <!-- Jackson Databind - Object mapping -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,373 @@
+/*
+----------------------------------------------------------------
+---------------------- GLOBAL VARIABLES ------------------------
+----------------------------------------------------------------
+*/
+
+// --> Colors
+
+$clr-bg:          rgb(20, 20, 20);        // Global background
+$clr-bg-header:   rgb(30, 30, 30);        // Header background
+$clr-bg-dialog:   rgb(40, 40, 40);        // Dialog background
+
+// |-> Table colors
+
+$clr-bg-caption:  rgb(30, 30, 30);        // Caption background
+$clr-bg-thead:    rgb(35, 35, 35);        // Table head background
+$clr-bg-tr-1:     rgb(40, 40, 40);        // Odd rows background
+$clr-bg-tr-2:     rgb(50, 50, 50);        // Even rows background
+$clr-bg-tr-hover: rgb(60, 60, 60);        // Row hover background
+
+$clr-txt:         rgb(250, 250, 250);     // Text color
+
+// --> Fonts
+
+$font-stack: Helvetica, sans-serif;       // Default font
+
+$font-size-header: 20px;                  // Header font size
+$font-size-form: 20px;
+
+// |-> Icon's fonts
+
+$icon-size: 20px;                         // Default icon size
+$icon-weight: 700;                        // Default icon weight
+
+// --> Borders
+
+$border-radius: 20px;                     // Default border radius
+
+// --> Animations & Keyframes
+
+$anm-hover-duration: 100ms;               // Add button - hover animation duration
+$kf-icon-duration: 400ms;                 // Add button - icon hover keyframe duration
+
+// --> Media screen
+
+$media-max-width-mobile: 600px;
+
+/*
+----------------------------------------------------------------
+-------------------------- ELEMENTS ----------------------------
+----------------------------------------------------------------
+*/
+
+body {
+  margin: 0;
+  height: 100vh;
+
+  font: 100% $font-stack;
+  color: $clr-txt;
+  background-color: $clr-bg;
+
+  user-select: none;
+}
+
+p {
+  text-align: center;
+}
+
+i {
+  color: $clr-txt;
+  font-size: $icon-size;
+  font-weight: $icon-weight;
+
+  cursor: pointer;
+}
+
+header {
+  width: 100%;
+  height: 80px;
+
+  background-color: $clr-bg-header;
+
+  position: absolute;
+  top: 0;
+
+  z-index: 5;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 15px;
+
+  font-size: $font-size-header;
+  font-weight: 700;
+
+  nav {
+    display: flex;
+    flex-direction: row-reverse;
+
+    a {
+      $link-padding: 5px;
+
+      text-decoration: none;
+      color: $clr-txt;
+
+      padding-left: $link-padding;
+      padding-right: $link-padding;
+    }
+  }
+}
+
+dialog {
+  $box-shadow-h: 10px;
+  $box-shadow-v: 10px;
+  $box-shadow-blur: 40px;
+  $box-shadow-color: rgb(10, 10, 10);
+
+  position: absolute;
+
+  top: 10%;
+  z-index: 10;
+
+  border: none;
+
+  border-radius: $border-radius;
+
+  font-size: 20px;
+
+  box-sizing: border-box;
+
+  min-width: $media-max-width-mobile;
+  min-height: 600px;
+
+  @media screen and (max-width: $media-max-width-mobile){
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    min-width: 300px;
+    margin: auto;
+  }
+
+  color: $clr-txt;
+
+  background-color: $clr-bg-dialog;
+
+  box-shadow: $box-shadow-h     $box-shadow-v  $box-shadow-blur $box-shadow-color,
+          (- $box-shadow-h)    $box-shadow-v  $box-shadow-blur $box-shadow-color,
+          (- $box-shadow-h) (- $box-shadow-v) $box-shadow-blur $box-shadow-color,
+  $box-shadow-h  (- $box-shadow-v) $box-shadow-blur $box-shadow-color;
+
+  .icon-dialog-close {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+  }
+}
+
+dialog:focus {
+  outline: none;
+}
+
+table {
+  $caption-height: 60px;
+
+  width: 100%;
+  border-collapse: collapse;
+
+  caption {
+    height: $caption-height;
+
+    position: sticky;
+    top: 0;
+
+    background-color: $clr-bg-caption;
+
+    p {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+
+      transform: translateX(-50%) translateY(-50%);
+
+      font-weight: 700;
+    }
+  }
+
+  thead {
+    background-color: $clr-bg-thead;
+
+    th {
+      position: sticky;
+      top: $caption-height;
+
+      background-color: $clr-bg-thead;
+
+      text-align: left;
+    }
+  }
+
+  tr {
+    transition-property: background-color;
+    transition-duration: 100ms;
+    transition-timing-function: ease;
+
+    th, td {
+      padding: 8px 16px;
+
+      p {
+        text-align: left;
+        margin: 0;
+      }
+    }
+  }
+
+  tr:nth-child(odd) {
+    background-color: $clr-bg-tr-1;
+  }
+  tr:nth-child(even) {
+    background-color: $clr-bg-tr-2;
+  }
+  tr:hover {
+    background-color: $clr-bg-tr-hover;
+  }
+
+  .devices-delete-column {
+    width: 20px;
+  }
+}
+
+form {
+  width: 100%;
+  height: 80%;
+
+  display: flex;
+
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 15px;
+
+  input {
+    width: 95%;
+    height: 50px;
+
+    border: none;
+    border-radius: ($border-radius * .5);
+
+    font-size: $font-size-form;
+  }
+
+  input[type="checkbox"] {
+     $checkbox-size: 30px;
+
+     width: $checkbox-size;
+   }
+
+  button {
+    width: 95%;
+    height: 50px;
+
+    border: none;
+    border-radius: ($border-radius * .5);
+
+    font-size: $font-size-form;
+
+    cursor: pointer;
+
+    background-color: rgb(220, 220, 220);
+
+    transition-property: background-color;
+    transition-duration: $anm-hover-duration;
+    transition-timing-function: ease;
+  }
+  button:hover {
+    background-color: rgb(200, 200, 200);
+  }
+}
+
+// --> Classes
+
+.btn-add {
+  width: 60px;
+  height: 60px;
+
+  border-radius: $border-radius;
+
+  position: absolute;
+
+  bottom: 10px;
+  right: 10px;
+
+  border: none;
+  background-color: rgb(0, 150, 255);;
+
+  cursor: pointer;
+
+  transition-property: transform;
+  transition-timing-function: ease;
+  transition-duration: $anm-hover-duration;
+
+  i {
+    transition-property: transform;
+    transition-timing-function: ease;
+    transition-duration: $anm-hover-duration;
+  }
+}
+
+.btn-add:hover {
+  transform: scale(1.05);
+
+  i {
+   animation: kf-icon-hover ($kf-icon-duration * 4);
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+// --> Identifiers
+
+#app {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#devices-table-container {
+  width: 95%;
+  max-height: 700px;
+  overflow-y: auto;
+
+  border-radius: $border-radius;
+
+  @media screen and (max-height: 900px) {
+    max-height: 500px;
+  }
+}
+
+
+/*
+----------------------------------------------------------------
+------------------------- KEYFRAMES ----------------------------
+----------------------------------------------------------------
+*/
+@keyframes kf-icon-hover {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}

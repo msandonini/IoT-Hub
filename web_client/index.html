@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>IoT Hub</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.scss">
+  </head>
+
+  <body>
+    <header>
+      <p>IoT Smart Hub</p>
+      <nav>
+        <a href="/" class="link-home"><i class="fa-solid fa-home"></i></a>
+        <a href="./" class="link-reload"><i class="fa-solid fa-rotate"></i></a>
+      </nav>
+    </header>
+
+    <div id="app">
+      <div id="devices-table-container">
+      </div>
+
+      <button class="btn-add"
+              onclick="document.getElementById('add-dialog').show();">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+
+    <dialog id="add-dialog">
+      <i
+              class="icon-dialog-close fa-solid fa-xmark"
+              onclick="document.getElementById('add-dialog').close();"
+      >
+      </i>
+      <h1>Add device</h1>
+
+      <form id="add-form">
+        <label for="add-dname">Device name:</label>
+        <input type="text" name="dname" id="add-dname" required>
+
+        <label for="add-address">Device address: </label>
+        <input type="text" name="address" id="add-address" pattern="^([0-9]{1,3}\.){3}[0-9]{1,3}$" required>
+
+        <label for="add-port">Device port:</label>
+        <input type="number" name="port" id="add-port" min="0" max="65535" required>
+
+        <input type="checkbox" name="post" id="add-accept-post">
+        <label for="add-accept-put">Accepts POST</label>
+
+        <input type="checkbox" name="put" id="add-accept-put">
+        <label for="add-accept-put">Accepts PUT</label>
+
+        <button type="submit">Add device</button>
+      </form>
+
+      <!-- TODO: Add dom event for submit in main.js -->
+    </dialog>
+
+    <dialog id="detail-dialog">
+      <i
+              class="icon-dialog-close fa-solid fa-xmark"
+              onclick="document.getElementById('detail-dialog').close();"
+      >
+      </i>
+
+      <!-- TODO: Create detail dialog -->
+    </dialog>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

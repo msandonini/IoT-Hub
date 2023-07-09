@@ -1,0 +1,18 @@
+server:
+  rootPath: /iot/
+  applicationConnectors:
+    - type: http
+      port: 8080
+      bindHost: 0.0.0.0
+  adminConnectors:
+    - type: http
+      port: 8081
+      bindHost: 0.0.0.0
+logging:
+  appenders:
+    # - type: console
+    - type: file
+      currentLogFilename: ./logs/dropwizard.log
+      archivedLogFilenamePattern: ./logs/dropwizard-%d.log.gz
+      archivedFileCount: 5
+      timeZone: UTC
