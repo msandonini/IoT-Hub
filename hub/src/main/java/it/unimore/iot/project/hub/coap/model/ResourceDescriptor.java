@@ -7,20 +7,16 @@ import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.elements.exception.ConnectorException;
 
 import java.io.IOException;
-import java.util.Set;
 
 public class ResourceDescriptor {
 
     protected DeviceDescriptor device;
     protected String name;
 
-    protected Set<CoAP.Code> methods;
-
     public ResourceDescriptor(DeviceDescriptor device, String name) {
         this.device = device;
         this.name = name;
     }
-
 
     public String getName() {
         return name;
@@ -28,10 +24,6 @@ public class ResourceDescriptor {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<CoAP.Code> getMethods() {
-        return methods;
     }
 
     public String handleGET() {
@@ -46,34 +38,31 @@ public class ResourceDescriptor {
         Request request = new Request(CoAP.Code.GET);
         request.setConfirmable(true);
 
-        String message;     // Error message
+        String errorMessage;     // Error message
 
         try {
             CoapResponse response = client.advanced(request);
 
             if (response != null && response.isSuccess()) {
-                methods.add(CoAP.Code.GET);
                 return response.getResponseText();
             }
             else if (response == null) {
-                message = "response is null";
+                errorMessage = "response is null";
             }
             else {
-                message = "code " + response.getCode().toString();
+                errorMessage = "code " + response.getCode().toString();
             }
 
 
         } catch (ConnectorException | IOException e) {
             e.printStackTrace();
-            message = "communication problem";
+            errorMessage = "communication problem";
         }
 
-        return "Error: " + message;
+        return "Error: " + errorMessage;
     }
 
     public String handlePOST() {
-        // TODO: Implement POST (Remember to add methods history)
-
         String targetUri = String.format("%s:%d/%s", device.getAddress(), device.getPort(), name);
 
         CoapClient client = new CoapClient(targetUri);
@@ -81,33 +70,57 @@ public class ResourceDescriptor {
         Request request = new Request(CoAP.Code.POST);
         request.setConfirmable(true);
 
-        String message;
+        String errorMessage;
 
         try {
             CoapResponse response = client.advanced(request);
 
             if (response != null && response.isSuccess()) {
-                methods.add(CoAP.Code.POST);
                 return "Status changed";
             }
             else if (response == null) {
-                message = "response is null";
+                errorMessage = "response is null";
             }
             else {
-                message = "code " + response.getCode().toString();
+                errorMessage = "code " + response.getCode().toString();
             }
         } catch (ConnectorException | IOException e) {
             e.printStackTrace();
-            message = "communication problem";
+            errorMessage = "communication problem";
         }
 
-        return "Error: " + message;
+        return "Error: " + errorMessage;
     }
 
     public String handlePUT(String payload) {
-        // TODO: Implement PUT (Remember to add methods history)
+        String targetUri = String.format("%s:%d/%s", device.getAddress(), device.getPort(), name);
 
-        return "Error";
+        CoapClient client = new CoapClient(targetUri);
+
+        Request request = new Request(CoAP.Code.PUT);
+        request.setConfirmable(true);
+        request.setPayload(payload);
+
+        String errorMessage;
+
+        try {
+            CoapResponse response = client.advanced(request);
+
+            if (response != null && response.isSuccess()) {
+                return "Status changed";
+            }
+            else if (response == null) {
+                errorMessage = "response is null";
+            }
+            else {
+                errorMessage = "code " + response.getCode().toString();
+            }
+        } catch (ConnectorException | IOException e) {
+            e.printStackTrace();
+            errorMessage = "communication problem";
+        }
+
+        return "Error: " + errorMessage;
     }
 
     @Override

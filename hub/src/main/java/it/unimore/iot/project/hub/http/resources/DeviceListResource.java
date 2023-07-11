@@ -2,7 +2,7 @@ package it.unimore.iot.project.hub.http.resources;
 
 import io.dropwizard.jersey.errors.ErrorMessage;
 import it.unimore.iot.project.hub.coap.model.DeviceDescriptor;
-import it.unimore.iot.project.hub.http.model.DeviceAdditionRequest;
+import it.unimore.iot.project.hub.http.request.DeviceAdditionRequest;
 import it.unimore.iot.project.hub.http.services.AppConfig;
 
 import javax.ws.rs.*;

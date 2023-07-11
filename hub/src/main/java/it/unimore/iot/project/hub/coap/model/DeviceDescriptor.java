@@ -65,7 +65,7 @@ public class DeviceDescriptor {
 
                 Set<String> keySet = link.getAttributes().getAttributeKeySet();
 
-                if (keySet.contains("rt")) {
+                if (link.getURI() != null && !link.getURI().isBlank()) {
                     ResourceDescriptor resourceDescriptor;
 
                     if (keySet.contains("obs")) {
@@ -121,6 +121,16 @@ public class DeviceDescriptor {
         return "Error: no resource with this name";
     }
 
+    public String sendPutRequest(String resourceName, String payload) {
+        for (ResourceDescriptor resource : resources) {
+            if (resource.getName().equals(resourceName)) {
+                return resource.handlePUT(payload);
+            }
+        }
+
+        return "Error: no resource with this name";
+    }
+
     public String getName() {
         return name;
     }
@@ -146,7 +156,7 @@ public class DeviceDescriptor {
     }
 
     public List<String> getResources() {
-        ArrayList<String> resourceNames = new ArrayList<String>();
+        ArrayList<String> resourceNames = new ArrayList<>();
         for (ResourceDescriptor resource : resources) {
             resourceNames.add(resource.getName());
         }

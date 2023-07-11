@@ -1,4 +1,4 @@
-package it.unimore.iot.project.hub.http.model;
+package it.unimore.iot.project.hub.http.request;
 
 public class DeviceAdditionRequest {
     private String name;
