@@ -2,8 +2,7 @@ package it.unimore.iot.project.hub.coap.model;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.CoAP;
-import org.eclipse.californium.core.coap.Request;
+import org.eclipse.californium.core.coap.*;
 import org.eclipse.californium.elements.exception.ConnectorException;
 
 import java.io.IOException;
@@ -12,6 +11,8 @@ public class ResourceDescriptor {
 
     protected DeviceDescriptor device;
     protected String name;
+
+    public static int ACCEPTED_MEDIA_TYPE = MediaTypeRegistry.APPLICATION_JSON;
 
     public ResourceDescriptor(DeviceDescriptor device, String name) {
         this.device = device;
@@ -30,6 +31,14 @@ public class ResourceDescriptor {
         return handleGET("");
     }
 
+    protected OptionSet createOptionSet() {
+        OptionSet optionSet = new OptionSet();
+
+        optionSet.setAccept(ACCEPTED_MEDIA_TYPE);
+
+        return optionSet;
+    }
+
     public String handleGET(String querystring) {
         String targetUri = String.format("%s:%d/%s?%s", device.getAddress(), device.getPort(), name, querystring);
 
@@ -37,6 +46,7 @@ public class ResourceDescriptor {
 
         Request request = new Request(CoAP.Code.GET);
         request.setConfirmable(true);
+        request.setOptions(this.createOptionSet());
 
         String errorMessage;     // Error message
 

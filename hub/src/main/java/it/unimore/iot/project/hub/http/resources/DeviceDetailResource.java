@@ -14,6 +14,8 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.util.Arrays;
 
 @Path("/hub/api/detail/")
 public class DeviceDetailResource {
@@ -26,7 +28,7 @@ public class DeviceDetailResource {
     @GET
     @Path("/{dname}")
     @Produces(MediaType.APPLICATION_JSON)
-    public synchronized Response getDevice(@Context ContainerRequestContext req,
+    public synchronized Response handleGet(@Context ContainerRequestContext req,
                                            @PathParam("dname") String dname) {
         DeviceDescriptor device = appConfig.getDeviceManager().getDevice(dname);
 
@@ -51,10 +53,38 @@ public class DeviceDetailResource {
                     .entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "Internal server error"))
                     .build();
         }
-
-
     }
 
+
+    @GET
+    @Path("/{dname}/{resource}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public synchronized Response handleGet(@Context UriInfo uriInfo,
+                                           @Context ContainerRequestContext req,
+                                           @PathParam("dname") String dname,
+                                           @PathParam("resource") String resource) {
+        DeviceDescriptor device = appConfig.getDeviceManager().getDevice(dname);
+
+        if (device == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(), "Device not found"))
+                    .build();
+        }
+
+        String[] splitUri = uriInfo.getRequestUri().toString().split("\\?");
+
+        String resp;
+
+        if (splitUri.length > 1) {
+            resp = device.sendGetRequest(resource, splitUri[1]);
+        }
+        else {
+            resp = device.sendGetRequest(resource);
+        }
+
+        return Response.ok(resp).build();
+    }
     // TODO: Add POST & PUT for operations on device
 
 }

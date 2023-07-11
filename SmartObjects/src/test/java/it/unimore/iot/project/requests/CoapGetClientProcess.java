@@ -22,11 +22,11 @@ public class CoapGetClientProcess {
             "humidity-actuator",
             "light-actuator"
     };
-    private static final int INDEX_TO_TEST = 0;
+    private static final int INDEX_TO_TEST = 1;
 
     private static final String QUERYSTRING = "";
 
-    private static final int MEDIA_TYPE = MediaTypeRegistry.APPLICATION_LINK_FORMAT;
+    private static final int MEDIA_TYPE = MediaTypeRegistry.APPLICATION_JSON;
 
     public static void main(String[] args) {
         try {

@@ -66,13 +66,14 @@ public class DeviceDescriptor {
                 Set<String> keySet = link.getAttributes().getAttributeKeySet();
 
                 if (link.getURI() != null && !link.getURI().isBlank()) {
+                    String uri = link.getURI().split("/")[1];
                     ResourceDescriptor resourceDescriptor;
 
                     if (keySet.contains("obs")) {
-                        resourceDescriptor = new ObservableResourceDescriptor(this, link.getURI());
+                        resourceDescriptor = new ObservableResourceDescriptor(this, uri);
                     }
                     else {
-                        resourceDescriptor = new ResourceDescriptor(this, link.getURI());
+                        resourceDescriptor = new ResourceDescriptor(this, uri);
                     }
                     resources.add(resourceDescriptor);
                 }

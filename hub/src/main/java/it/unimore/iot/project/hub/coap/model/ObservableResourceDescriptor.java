@@ -5,10 +5,14 @@ import org.eclipse.californium.core.CoapHandler;
 import org.eclipse.californium.core.CoapObserveRelation;
 import org.eclipse.californium.core.CoapResponse;
 import org.eclipse.californium.core.coap.CoAP;
+import org.eclipse.californium.core.coap.MediaTypeRegistry;
+import org.eclipse.californium.core.coap.OptionSet;
 import org.eclipse.californium.core.coap.Request;
 
+import javax.ws.rs.core.MediaType;
+
 public class ObservableResourceDescriptor extends ResourceDescriptor{
-    protected String savedValue;
+    protected String savedValue = "No data";
     CoapObserveRelation observeRelation;
 
     public ObservableResourceDescriptor(DeviceDescriptor device, String name) {
@@ -22,12 +26,14 @@ public class ObservableResourceDescriptor extends ResourceDescriptor{
                 observeRelation.proactiveCancel();
             }
 
-            String targetUri = String.format("%s%s", device.getAddress(), name);
+            String targetUri = String.format("%s:%d/%s", device.getAddress(), device.getPort(), name);
 
             CoapClient client = new CoapClient(targetUri);
 
             Request request = new Request(CoAP.Code.GET);
-            request.setURI(targetUri);
+
+            request.setOptions(super.createOptionSet());
+
             request.setObserve();
             request.setConfirmable(true);
 

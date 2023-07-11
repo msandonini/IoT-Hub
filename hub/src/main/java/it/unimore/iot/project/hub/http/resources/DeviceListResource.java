@@ -26,7 +26,7 @@ public class DeviceListResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public synchronized Response getDeviceList(@Context ContainerRequestContext req) {
+    public synchronized Response handleGet(@Context ContainerRequestContext req) {
         try {
             Map<String, DeviceDescriptor> map = appConfig.getDeviceManager().getDeviceMap();
 
@@ -51,7 +51,7 @@ public class DeviceListResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public synchronized Response addDevice(@Context ContainerRequestContext req,
+    public synchronized Response handlePut(@Context ContainerRequestContext req,
                                            @Context UriInfo uriInfo,
                                            DeviceAdditionRequest deviceRequest) {
         try {
@@ -83,7 +83,7 @@ public class DeviceListResource {
     @DELETE
     @Path("/{dname}")
     @Produces(MediaType.APPLICATION_JSON)
-    public synchronized Response deleteDevice(@Context ContainerRequestContext req,
+    public synchronized Response handleDelete(@Context ContainerRequestContext req,
                                               @PathParam("dname") String dname) {
 
         try {
