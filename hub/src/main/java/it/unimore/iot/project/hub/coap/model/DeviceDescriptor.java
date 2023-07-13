@@ -87,11 +87,6 @@ public class DeviceDescriptor {
 
     }
 
-    // TODO: Manage data getters
-    // TODO: Manage observing data updates
-    // TODO: Manage non-observing GET requests
-    // TODO: Manage data update requests
-
     public String sendGetRequest(String resourceName) {
         for (ResourceDescriptor resource : resources) {
             if (resource.getName().equals(resourceName)) {

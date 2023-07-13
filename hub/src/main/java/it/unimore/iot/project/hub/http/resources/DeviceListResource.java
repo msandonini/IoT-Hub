@@ -26,7 +26,7 @@ public class DeviceListResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public synchronized Response handleGet(@Context ContainerRequestContext req) {
+    public  Response handleGet(@Context ContainerRequestContext req) {
         try {
             Map<String, DeviceDescriptor> map = appConfig.getDeviceManager().getDeviceMap();
 

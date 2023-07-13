@@ -6,10 +6,7 @@ import io.dropwizard.jersey.errors.ErrorMessage;
 import it.unimore.iot.project.hub.coap.model.DeviceDescriptor;
 import it.unimore.iot.project.hub.http.services.AppConfig;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -28,8 +25,8 @@ public class DeviceDetailResource {
     @GET
     @Path("/{dname}")
     @Produces(MediaType.APPLICATION_JSON)
-    public synchronized Response handleGet(@Context ContainerRequestContext req,
-                                           @PathParam("dname") String dname) {
+    public Response handleGet(@Context ContainerRequestContext req,
+                              @PathParam("dname") String dname) {
         DeviceDescriptor device = appConfig.getDeviceManager().getDevice(dname);
 
         if (device == null) {
@@ -59,10 +56,10 @@ public class DeviceDetailResource {
     @GET
     @Path("/{dname}/{resource}")
     @Produces(MediaType.APPLICATION_JSON)
-    public synchronized Response handleGet(@Context UriInfo uriInfo,
-                                           @Context ContainerRequestContext req,
-                                           @PathParam("dname") String dname,
-                                           @PathParam("resource") String resource) {
+    public Response handleGet(@Context UriInfo uriInfo,
+                              @Context ContainerRequestContext req,
+                              @PathParam("dname") String dname,
+                              @PathParam("resource") String resource) {
         DeviceDescriptor device = appConfig.getDeviceManager().getDevice(dname);
 
         if (device == null) {
@@ -85,6 +82,45 @@ public class DeviceDetailResource {
 
         return Response.ok(resp).build();
     }
-    // TODO: Add POST & PUT for operations on device
 
+    @POST
+    @Path("/{dname}/{resource}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public synchronized Response handlePOST(@Context ContainerRequestContext req,
+                                            @PathParam("dname") String dname,
+                                            @PathParam("resource") String resource) {
+        DeviceDescriptor device = appConfig.getDeviceManager().getDevice(dname);
+
+        if (device == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(), "Device not found"))
+                    .build();
+        }
+
+        String resp = device.sendPostRequest(resource);
+
+        return Response.ok(resp).build();
+    }
+
+    @PUT
+    @Path("/{dname}/{resource}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public synchronized Response handlePUT(@Context ContainerRequestContext req,
+                                           @PathParam("dname") String dname,
+                                           @PathParam("resource") String resource,
+                                           String payload) {
+        DeviceDescriptor device = appConfig.getDeviceManager().getDevice(dname);
+
+        if (device == null) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(), "Device not found"))
+                    .build();
+        }
+
+        String resp = device.sendPutRequest(resource, payload);
+
+        return Response.ok(resp).build();
+    }
 }
