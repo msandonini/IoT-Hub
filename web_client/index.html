@@ -48,26 +48,18 @@
         <label for="add-port">Device port:</label>
         <input type="number" name="port" id="add-port" min="0" max="65535" required>
 
-        <input type="checkbox" name="post" id="add-accept-post">
-        <label for="add-accept-put">Accepts POST</label>
-
-        <input type="checkbox" name="put" id="add-accept-put">
-        <label for="add-accept-put">Accepts PUT</label>
-
         <button type="submit">Add device</button>
       </form>
-
-      <!-- TODO: Add dom event for submit in main.js -->
     </dialog>
 
     <dialog id="detail-dialog">
-      <i
-              class="icon-dialog-close fa-solid fa-xmark"
-              onclick="document.getElementById('detail-dialog').close();"
-      >
-      </i>
+      <header id="detail-header">
+      </header>
 
-      <!-- TODO: Create detail dialog -->
+
+      <div id="detail-data">
+
+      </div>
     </dialog>
 
     <script type="module" src="/main.js"></script>

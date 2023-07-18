@@ -8,7 +8,7 @@
 
 $clr-bg:          rgb(20, 20, 20);        // Global background
 $clr-bg-header:   rgb(30, 30, 30);        // Header background
-$clr-bg-dialog:   rgb(40, 40, 40);        // Dialog background
+$clr-bg-dialog:   rgb(25, 25, 25);        // Dialog background
 
 // |-> Table colors
 
@@ -121,6 +121,8 @@ dialog {
 
   position: absolute;
 
+  padding: 0px;
+
   top: 10%;
   z-index: 10;
 
@@ -132,8 +134,12 @@ dialog {
 
   box-sizing: border-box;
 
-  min-width: $media-max-width-mobile;
+  min-width: 900px;
   min-height: 600px;
+  max-height: 88vh;
+
+  overflow-x: hidden;
+  overflow-y: auto;
 
   @media screen and (max-width: $media-max-width-mobile){
     top: 0;
@@ -149,16 +155,65 @@ dialog {
 
   background-color: $clr-bg-dialog;
 
-  box-shadow: $box-shadow-h     $box-shadow-v  $box-shadow-blur $box-shadow-color,
-          (- $box-shadow-h)    $box-shadow-v  $box-shadow-blur $box-shadow-color,
-          (- $box-shadow-h) (- $box-shadow-v) $box-shadow-blur $box-shadow-color,
-  $box-shadow-h  (- $box-shadow-v) $box-shadow-blur $box-shadow-color;
+  box-shadow: $box-shadow-h     $box-shadow-v     $box-shadow-blur $box-shadow-color,
+              (- $box-shadow-h) $box-shadow-v     $box-shadow-blur $box-shadow-color,
+              (- $box-shadow-h) (- $box-shadow-v) $box-shadow-blur $box-shadow-color,
+              $box-shadow-h     (- $box-shadow-v) $box-shadow-blur $box-shadow-color;
+
+  header {
+    position: sticky;
+    border-radius: $border-radius $border-radius 0 0;
+
+    h2 {
+      position: absolute;
+
+      top: 15px;
+      left: 20px;
+
+      margin: 0;
+    }
+    h5 {
+      position: absolute;
+
+      top: 50px;
+      left: 20px;
+
+      margin: 0;
+
+      color: rgb(150, 150, 150);
+    }
+  }
+
+  h3 {
+    text-align: center;
+  }
 
   .icon-dialog-close {
     position: absolute;
 
     top: 15px;
     right: 15px;
+  }
+
+  table {
+    margin: 10px;
+
+    thead {
+      th {
+        position: inherit;
+      }
+    }
+
+    td {
+      text-decoration: none;
+    }
+
+    th:nth-child(odd) {
+      width: 30%;
+    }
+    th:nth-child(even) {
+       width: 70%;
+     }
   }
 }
 

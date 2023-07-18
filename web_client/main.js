@@ -112,12 +112,113 @@ function populateTable(data) {
     }
 }
 
-function populateDetailDialog(data) {
+async function populateDetailDialog(data) {
     console.log("[DATA] -> ", data);
 
     const json = JSON.parse(data);
 
+    let dialog = document.getElementById("detail-dialog");
+    let header = document.getElementById("detail-header");
+    let container = document.getElementById("detail-data");
 
+    header.innerHTML = `
+        <h2>${json.name}</h2>
+        <h5>${json.address}:${json.port}</h5>
+        <i
+                class="icon-dialog-close fa-solid fa-xmark"
+                onclick="document.getElementById('detail-dialog').close();"
+        >
+        </i>
+    `;
+
+    container.innerHTML = "";
+
+    let resources = json.resources;
+
+    if (resources.length > 0) {
+        for (const resource of resources) {
+            const response = await fetch(`${API_SERVER}/detail/${json.name}/${resource}`);
+
+            let resourceData = "{}";
+
+            if (response.ok) {
+                resourceData = await response.text();
+
+                console.log(`[RESOURCE] ${resource} -> ${resourceData}`);
+
+                let resourceJson = JSON.parse(resourceData);
+
+                try {
+                    for (const responseArray of resourceJson) {
+                        let htmlStr =
+                            `
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            `;
+
+                        Object.entries(responseArray).forEach(([key, value]) => {
+                            htmlStr +=
+                                `
+                                <tr>
+                                    <td>${key}</td>
+                                    <td>${value}</td>
+                                </tr>
+                                `;
+                        });
+
+                        htmlStr += `
+                        </tbody></table>`;
+
+                        container.innerHTML += htmlStr;
+                    }
+                }
+                catch (TypeError) {
+                    let htmlStr =
+                        `
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            `;
+
+                    Object.entries(resourceJson).forEach(([key, value]) => {
+                        htmlStr +=
+                            `
+                                <tr>
+                                    <td>${key}</td>
+                                    <td>${value}</td>
+                                </tr>
+                                `;
+                    });
+
+                    htmlStr += `
+                        </tbody></table>`;
+
+                    container.innerHTML += htmlStr;
+                }
+            }
+        }
+    }
+    else {
+        container.innerHTML =
+            `
+            <h3>Error: no resources found</h3>
+            <p>It was impossible to get the device data.</p>
+            <p>Check the connection or the device status</p>
+            `;
+    }
+
+    dialog.show();
 }
 
 async function openDetail(key) {
@@ -130,7 +231,7 @@ async function openDetail(key) {
             data = await response.text();
         }
 
-        populateTable(data);
+        populateDetailDialog(data);
     } catch (error) {
         console.error("Error: ", error);
     }
