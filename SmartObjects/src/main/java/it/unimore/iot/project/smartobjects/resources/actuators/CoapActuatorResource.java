@@ -14,22 +14,33 @@ public abstract class CoapActuatorResource<T_ACTUATOR extends GenericActuator<?,
 
     protected T_ACTUATOR actuator;
 
+    protected boolean observable;
+
     public CoapActuatorResource(String deviceId, String objectTitle, String name,
                                 Number actuatorVersion, T_ACTUATOR actuator) {
+        this(deviceId, objectTitle, name, actuatorVersion, actuator, true);
+    }
+
+    public CoapActuatorResource(String deviceId, String objectTitle, String name,
+                                Number actuatorVersion, T_ACTUATOR actuator, boolean observable) {
         super(name);
         this.objectTitle = objectTitle;
         this.actuatorVersion = actuatorVersion;
         this.deviceId = deviceId;
         this.actuator = actuator;
+        this.observable = observable;
 
         init();
     }
 
     private void init() {
-        setObservable(true);
-        setObserveType(CoAP.Type.CON);
-
         getAttributes().setTitle(objectTitle);
-        getAttributes().setObservable();
+
+        if (observable) {
+            setObservable(true);
+            setObserveType(CoAP.Type.CON);
+            getAttributes().setObservable();
+        }
+
     }
 }
