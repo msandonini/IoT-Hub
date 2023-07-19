@@ -16,6 +16,8 @@ import java.util.*;
 import java.util.concurrent.Executors;
 
 public class DeviceDescriptor {
+    public static final long RESOURCE_DISCOVERY_RETRY_PERIOD_MS = 60000;
+    public static final long RESOURCE_DISCOVERY_TIMEOUT_MS = 30000;
 
     private Set<ResourceDescriptor> resources;
 
@@ -32,21 +34,38 @@ public class DeviceDescriptor {
         this.port = port;
 
         Executors.newSingleThreadExecutor().submit(() -> {
-            try {
-                discoverResources();
-            } catch (ConnectorException e) {
-                System.out.println("[ERROR][RESOURCE DISCOVERY] - [DEVICE] " + name + " [TYPE] ConnectorException");
-            } catch (IOException e) {
-                System.out.println("[ERROR][RESOURCE DISCOVERY] - [DEVICE] " + name + " [TYPE] IOException");
-            } catch (Exception e) {
-                System.out.println("[ERROR][RESOURCE DISCOVERY] - [DEVICE] " + name + " [TYPE] Exception (Generic)");
-            }
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        System.out.println("[TASK] Discover resources - [DEVICE] " + name + " [STATUS] Start");
+                        if (discoverResources()) {
+                            timer.cancel();
+                            System.out.println("[TASK] Discover resources - [DEVICE] " + name + " [STATUS] Cancel");
+                        }
+
+                        System.out.println("[TASK] Discover resources - [DEVICE] " + name + " [STATUS] End");
+                    } catch (ConnectorException e) {
+                        System.out.println("[ERROR][RESOURCE DISCOVERY] - [DEVICE] " + name + " [TYPE] ConnectorException");
+                    } catch (IOException e) {
+                        System.out.println("[ERROR][RESOURCE DISCOVERY] - [DEVICE] " + name + " [TYPE] IOException");
+                    } catch (Exception e) {
+                        System.out.println("[ERROR][RESOURCE DISCOVERY] - [DEVICE] " + name + " [TYPE] Exception (Generic)");
+                    }
+                }
+            }, 0, RESOURCE_DISCOVERY_RETRY_PERIOD_MS);
         });
     }
 
-    private void discoverResources() throws ConnectorException, IOException {
+
+
+    private synchronized boolean discoverResources() throws ConnectorException, IOException {
+        this.resources.clear();
+
         System.out.println("[RESOURCE DISCOVERY] - [DEVICE] " + name + " [STATUS] Starting");
         CoapClient client = new CoapClient(String.format("coap://%s:%d/.well-known/core", address, port));
+        client.setTimeout(RESOURCE_DISCOVERY_TIMEOUT_MS);
 
         Request request = new Request(CoAP.Code.GET);
 
@@ -55,7 +74,7 @@ public class DeviceDescriptor {
         if (response != null && response.isSuccess()) {
             if (response.getOptions().getContentFormat() != MediaTypeRegistry.APPLICATION_LINK_FORMAT) {
                 System.out.println("[RESOURCE DISCOVERY] - [DEVICE] " + name + " [STATUS] Error: Not link format");
-                return;
+                return false;
             }
 
             Set<WebLink> links = LinkFormat.parse(response.getResponseText());
@@ -80,11 +99,10 @@ public class DeviceDescriptor {
             }
 
             System.out.println("[RESOURCE DISCOVERY] - [DEVICE] " + name + " [STATUS] Ended [RESOURCES] " + resources);
-        }
-        else {
-            System.out.println("[RESOURCE DISCOVERY] - [DEVICE] " + name + " [STATUS] Ended [RESOURCES] No resources found");
+            return true;
         }
 
+        return false;
     }
 
     public String sendGetRequest(String resourceName) {
