@@ -10,14 +10,13 @@ public class LightControllerSmartObject extends CoapServer {
 
     public static final String DEVICE_ID = "iot:light";
 
-    LightSmartActuator lightActuator;
+    private LightSmartActuator lightActuator;
 
     public LightControllerSmartObject(int port) {
         super(port);
 
         lightActuator = new LightSmartActuator();
         this.lightActuator.setActive(true);
-
 
         LightActuatorResource lightActuatorResource = new LightActuatorResource(DEVICE_ID, "light-actuator", lightActuator);
 
