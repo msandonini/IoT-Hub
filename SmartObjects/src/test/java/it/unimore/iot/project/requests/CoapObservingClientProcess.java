@@ -10,9 +10,9 @@ import org.eclipse.californium.elements.exception.ConnectorException;
 import java.io.IOException;
 
 public class CoapObservingClientProcess {
-    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5683";
+    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5685";
 
-    private static final String DEVICE_URI = "temperature-sensor";
+    private static final String DEVICE_URI = "presence-sensor";
 
     public static void main(String[] args) {
         String targetUri = String.format("%s/%s", COAP_ENDPOINT, DEVICE_URI);
