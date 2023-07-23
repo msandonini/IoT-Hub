@@ -10,17 +10,16 @@ import org.eclipse.californium.elements.exception.ConnectorException;
 import java.io.IOException;
 
 public class CoapPutClientProcess {
-    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5684";
+    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5686";
     private static final String[] DEVICES_URI_ARR = {
-            "temperature-actuator",
-            "humidity-actuator"
+            "shutter-actuator",
     };
 
     private static final String QUERYSTING = "";
 
-    private static final int INDEX_TO_TEST = 1;
+    private static final int INDEX_TO_TEST = 0;
 
-    private static final String PAYLOAD = "10";
+    private static final String PAYLOAD = "0.5";
 
     public static void main(String[] args) {
         try {

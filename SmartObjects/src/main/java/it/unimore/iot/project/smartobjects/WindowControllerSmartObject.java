@@ -3,6 +3,8 @@ package it.unimore.iot.project.smartobjects;
 import it.unimore.iot.project.smartobjects.models.actuators.LightActivatedActuator;
 import it.unimore.iot.project.smartobjects.models.actuators.LightActivatedShutterActuator;
 import it.unimore.iot.project.smartobjects.models.sensors.LightSmartSensor;
+import it.unimore.iot.project.smartobjects.resources.actuators.ShutterActuatorResource;
+import it.unimore.iot.project.smartobjects.resources.sensors.LightSensorResource;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.server.resources.Resource;
 
@@ -28,11 +30,15 @@ public class WindowControllerSmartObject extends CoapServer {
         lightActivatedActuator.setActive(true);
         shutterActuator.setActive(true);
 
-        logLightSensor();
-        logLightActivatedActuator();
+        //logLightSensor();
+        //logLightActivatedActuator();
         logShutterActuator();
 
-        // TODO: Make resources
+        LightSensorResource lightSensorResource = new LightSensorResource(DEVICE_ID, "light-sensor", lightSensor);
+        ShutterActuatorResource shutterActuatorResource = new ShutterActuatorResource(DEVICE_ID, "shutter-actuator", shutterActuator);
+
+        this.add(lightSensorResource);
+        this.add(shutterActuatorResource);
     }
 
     private void logLightSensor() {

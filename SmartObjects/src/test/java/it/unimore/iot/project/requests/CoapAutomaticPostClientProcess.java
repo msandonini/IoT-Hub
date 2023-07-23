@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 public class CoapAutomaticPostClientProcess {
-    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5683";
+    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5686";
     private static final String COAP_RESOURCE_DISCOVERY = "/.well-known/core";
 
     private static final String[] RT_DEVICES_ARR = {
-            "iot.actuator.switch"
+            "iot.actuator.shutter"
     };
     private static ArrayList<String> RT_DEVICES = new ArrayList<>(List.of(RT_DEVICES_ARR));
 

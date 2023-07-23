@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Set;
 
 public class CoapAutomaticGetClientProcess {
-    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5684";
+    private static final String COAP_ENDPOINT = "coap://127.0.0.1:5686";
     private static final String COAP_RESOURCE_DISCOVERY = "/.well-known/core";
 
     private static final String LOG_PATH = "log/client.get/";
