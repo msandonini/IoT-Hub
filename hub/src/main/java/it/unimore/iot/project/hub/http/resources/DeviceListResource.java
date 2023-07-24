@@ -2,6 +2,7 @@ package it.unimore.iot.project.hub.http.resources;
 
 import io.dropwizard.jersey.errors.ErrorMessage;
 import it.unimore.iot.project.hub.coap.model.DeviceDescriptor;
+import it.unimore.iot.project.hub.http.persistence.DeviceManager;
 import it.unimore.iot.project.hub.http.request.DeviceAdditionRequest;
 import it.unimore.iot.project.hub.http.services.AppConfig;
 
@@ -14,6 +15,13 @@ import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * A resource to manage the api requests sent to the path <a href="#@{link}">{@link /hub/api/list/*}</a>.
+ *
+ * @see AppConfig
+ *
+ * @author Sandonini Mirco
+ */
 @Path("/hub/api/list/")
 public class DeviceListResource {
 
@@ -23,10 +31,21 @@ public class DeviceListResource {
         this.appConfig = appConfig;
     }
 
+    /**
+     * The method that manages the GET requests to the path <a href="#@{link}">{@link /hub/api/list/}</a>.
+     * It returns a JSON representation of the devices currently saved in the device manager
+     *
+     * @param req the api request
+     * @return the response to the api call
+     *
+     * @see Context
+     * @see ContainerRequestContext
+     * @see DeviceManager
+     */
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public  Response handleGet(@Context ContainerRequestContext req) {
+    public Response handleGet(@Context ContainerRequestContext req) {
         try {
             Map<String, DeviceDescriptor> map = appConfig.getDeviceManager().getDeviceMap();
 
@@ -47,6 +66,21 @@ public class DeviceListResource {
         }
     }
 
+    /**
+     * The method that manages the PUT requests to the path <a href="#@{link}">{@link /hub/api/list/}</a>.
+     * It adds a new device to the device manager.
+     *
+     * @param req the api request
+     * @param uriInfo the request uri
+     * @param deviceRequest the serialized representation of the device to add
+     * @return the response to the api call
+     *
+     * @see Context
+     * @see ContainerRequestContext
+     * @see UriInfo
+     * @see DeviceManager
+     * @see DeviceAdditionRequest
+     */
     @PUT
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -80,6 +114,19 @@ public class DeviceListResource {
 
     }
 
+    /**
+     * The method that manages the DELETE requests to the path <a href="#@{link}">{@link /hub/api/list/{device}}</a>.
+     * It removes a device from the device manager.
+     *
+     * @param req the api request
+     * @param dname the device name
+     * @return the response to the api call
+     *
+     * @see Context
+     * @see ContainerRequestContext
+     * @see PathParam
+     * @see DeviceManager
+     */
     @DELETE
     @Path("/{dname}")
     @Produces(MediaType.APPLICATION_JSON)
