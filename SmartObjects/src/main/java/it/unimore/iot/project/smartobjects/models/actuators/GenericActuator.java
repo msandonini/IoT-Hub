@@ -9,7 +9,7 @@ public abstract class GenericActuator<T_READING, T_UPDATING> extends DataListene
     protected T_READING savedValue;
 
     public GenericActuator() {
-        this.isActive = false;
+        this.isActive = true;
     }
 
     public void toggleActive() {
