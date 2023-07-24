@@ -3,14 +3,14 @@ package it.unimore.iot.project.smartobjects.resources.actuators;
 import com.google.gson.Gson;
 import it.unimore.dipi.iot.utils.SenMLPack;
 import it.unimore.dipi.iot.utils.SenMLRecord;
-import it.unimore.iot.project.smartobjects.models.actuators.LightActivatedShutterActuator;
+import it.unimore.iot.project.smartobjects.models.actuators.ShutterActuator;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 
 import java.util.Optional;
 
-public class ShutterActuatorResource extends CoapSenmlActuatorResource<LightActivatedShutterActuator> {
+public class ShutterActuatorResource extends CoapSenmlActuatorResource<ShutterActuator> {
 
     private static final String OBJECT_TITLE = "ShutterActuator";
 
@@ -21,7 +21,7 @@ public class ShutterActuatorResource extends CoapSenmlActuatorResource<LightActi
 
     private Gson gson;
 
-    public ShutterActuatorResource(String deviceId, String name, LightActivatedShutterActuator actuator) {
+    public ShutterActuatorResource(String deviceId, String name, ShutterActuator actuator) {
         super(deviceId, OBJECT_TITLE, name, SENML_RT, SENML_UNIT, ACTUATOR_VERSION, actuator);
 
         init();
